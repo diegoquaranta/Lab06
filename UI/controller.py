@@ -29,3 +29,30 @@ class Controller:
 
     # Altre Funzioni Event Handler
     # TODO
+    def get_lista_strumenti_mostra(self):
+        return self._model.get_strumenti()
+    def mostra_strumenti(self):
+        strumenti = self.get_lista_strumenti_mostra()
+
+        self._view.lista_strumenti.controls.clear()
+
+        for strumento in strumenti:
+            self._view.lista_strumenti.controls.append(ft.Text(str(strumento)))
+
+        self._view.update()
+
+    def get_tipo(self):
+        return self._model.tipo
+    def set_tipo(self,  tipo):
+        self._model.tipo = tipo
+    def cerca_tipo(self, e):
+        tipo = self._view.input_tipo_strumento.value
+
+        strumenti_trovati = self._model.cerca_strumenti_per_tipo(tipo)
+
+        self._view.lista_strumenti_ricerca.controls.clear()
+
+        for strumento in strumenti_trovati:
+            self._view.lista_strumenti_ricerca.controls.append(ft.Text(str(strumento))) #importante che si deve mettere ft.Text
+
+        self._view.update()

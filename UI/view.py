@@ -1,4 +1,8 @@
+from tkinter.constants import CENTER
+
 import flet as ft
+from flet import MainAxisAlignment
+
 from UI.alert import AlertManager
 
 '''
@@ -64,6 +68,9 @@ class View:
 
         # Altri Pulsanti da implementare (es. "Mostra" e "Cerca")
         # TODO
+        testo_strumenti = ft.Text("Strumenti", size=20)
+        pulsante_mostra_lista = ft.Button("Mostra", on_click =self.controller.mostra_strumenti)
+        pulsante_cerca = ft.Button("Cerca", on_click = self.controller.cerca_tipo)
 
         # --- LAYOUT ---
         self.page.add(
@@ -83,9 +90,16 @@ class View:
 
             # Sezione 3
             # TODO
+            ft.Row(controls= [testo_strumenti, pulsante_mostra_lista]),
+            self.lista_strumenti,
+            ft.Divider(),
 
             # Sezione 4
             # TODO
+            ft.Text("Cerca Strumento per Tipo", size= 20),
+            ft.Row([self.input_tipo_strumento, pulsante_cerca]),
+            self.lista_strumenti_ricerca,
+
         )
 
     def cambia_tema(self, e):

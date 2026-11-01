@@ -13,6 +13,7 @@ class DepositoStrumenti:
     def __init__(self, nome, responsabile):
         self._nome = nome
         self._responsabile = responsabile
+        self._tipo = None
 
     @property
     def nome(self):
@@ -30,12 +31,35 @@ class DepositoStrumenti:
     def responsabile(self, responsabile):
         self._responsabile = responsabile
 
+    @property
+    def tipo(self):
+        return self._tipo
+
+    @tipo.setter
+    def tipo(self, tipo):
+        self._tipo = tipo
+
     def get_strumenti(self) -> list[Strumento] | None:
         """
             Funzione che legge tutti gli strumenti nel database
             :return: una lista con tutti gli strumenti presenti oppure None
         """
         # TODO
+        self.lista_strumenti_mostra = [] #ogni volta che si preme mostra la lista viene svuotata
+
+        conn = get_connection()
+
+        cursore = conn.cursor()
+
+        query = "SELECT * FROM STRUMENTO "
+        cursore.execute(query) #eseguo la query
+
+        for riga in cursore:
+            self.lista_strumenti_mostra.append(Strumento(*riga))  #importatne mettere l'* perche permette di separare gli elementi della riga nell'ogg Strumento
+
+        cursore.close()
+        conn.close()
+        return self.lista_strumenti_mostra
 
     def cerca_strumenti_per_tipo(self, tipo) -> list[Strumento] | None:
         """
@@ -44,3 +68,21 @@ class DepositoStrumenti:
             :return: una lista con tutti gli strumenti del tipo indicato oppure None
         """
         # TODO
+        self._lista_strumenti_tipo= []
+        conn = get_connection()
+
+        cursore2 = conn.cursor()
+
+        query = """SELECT *
+                FROM STRUMENTO
+                WHERE TIPO = %s"""
+
+        cursore2.execute(query, (tipo, ))
+
+        for riga in cursore2:
+            self._lista_strumenti_tipo.append(Strumento(*riga))
+
+        cursore2.close()
+        conn.close()
+        return self._lista_strumenti_tipo
+
